@@ -1,5 +1,7 @@
 # Ten Commandments for Coding Agents
 
+![Ten Commandments for Coding Agents](assets/social-preview.png)
+
 A minimal, drop-in system prompt for coding agents — Claude Code, Codex CLI, Gemini CLI, OpenCode, Cursor, and any tool that reads `AGENTS.md` or `CLAUDE.md`.
 
 Two files. Ten rules. No fluff.
