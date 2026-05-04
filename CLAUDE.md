@@ -1,5 +1,3 @@
-# CLAUDE.md
-
 ## Ten Commandments for Coding Agents
 
 1. **Understand first.** Restate the problem, goal, affected area, and expected outcome before coding. Do not assume silently.
