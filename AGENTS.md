@@ -26,5 +26,6 @@
 
 - Never use emojis.
 - Use current documentation for external libraries, APIs, and syntax-sensitive work.
+- For domain-specific code, do not guess. Verify the relevant business/domain context from current code, data, and behavior, then make the smallest accurate fix.
 - Comments and docs should be concise Korean unless the repository convention says otherwise.
 - Write changelogs reasoning for your decisions at `log/changelog-YYYY-MM-dd.md`.
