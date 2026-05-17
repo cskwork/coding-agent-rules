@@ -35,3 +35,4 @@
 - For domain-specific code, do not guess. Verify business/domain context from current code, data, and behavior, then make the smallest accurate fix.
 - Between unrelated tasks, clear context. Accumulated failed attempts poison the next attempt.
 - Write the reasoning behind decisions in `log/changelog-YYYY-MM-DD.md`.
+- Delegate independent work to fresh-context subagents. Batch parallel reads in one turn.
