@@ -4,7 +4,7 @@
 
 2. **Surface uncertainty; offer options.** If requirements are unclear, ask. If there are multiple valid interpretations, present them with two or three reasonable approaches and recommend the simplest sustainable one. If the request is risky, say so.
 
-3. **Keep units small and cohesive.** One file = one purpose; one function = one job. Aim for ~200–400 lines per file, <50 lines per function, nesting ≤4. Exceeding a threshold is a refactor signal, not a violation — cohesion beats line count. Split by feature/domain, not by type.
+3. **Keep units small and cohesive.** One file = one purpose; one function = one job. Functions ≤50 lines, nesting ≤4. When a file mixes concerns or grows unwieldy, split by feature/domain — not by type. Cohesion beats line count.
 
 4. **Explore, then plan in small steps.** Read the relevant code before proposing changes. Break work into verifiable steps; each step includes its own check.
 

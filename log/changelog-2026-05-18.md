@@ -1,4 +1,57 @@
-# 2026-05-18 — 10계명 룰 2+3 병합, 신규 룰 "Keep units small" 승격
+# 2026-05-18 (REVISION 2) — 룰 3 파일 줄수 임계값 제거
+
+## 정정 사유
+
+REVISION 1에서 파일 줄수 임계값을 "200-400" 으로 박았는데, 사용자 재검 + 리서치 재대조 결과 *industry best practice 와 정합하지 않음*:
+
+- Google Java/Python/TS style guide: 파일 줄수 cap **부재**
+- PEP 8: 파일 줄수 cap **부재**
+- Linux kernel: 파일 줄수 cap **부재**
+- ESLint `max-lines`: 디폴트 300, opt-in disabled
+- Pylint `max-module-lines`: 디폴트 1000, opt-in
+- 본 리포 `rules/common/coding-style.md`: 200-400/800 — 출처 불분명, 보수적 strict
+
+200-400은 ESLint 디폴트보다 낮고 어떤 공식 가이드와도 1:1 매칭 안 됨 → "best practice 근거" 가 약함.
+
+## 이번 변경
+
+룰 3에서 파일 줄수 절 제거. 함수 50줄/중첩 4는 유지 (ESLint+Linux kernel+Clean Code 컨센서스).
+
+변경 전:
+> 3. **Keep units small and cohesive.** One file = one purpose; one function = one job. Aim for ~200–400 lines per file, <50 lines per function, nesting ≤4. Exceeding a threshold is a refactor signal, not a violation — cohesion beats line count. Split by feature/domain, not by type.
+
+변경 후:
+> 3. **Keep units small and cohesive.** One file = one purpose; one function = one job. Functions ≤50 lines, nesting ≤4. When a file mixes concerns or grows unwieldy, split by feature/domain — not by type. Cohesion beats line count.
+
+## 결정 이유 (Reasoning)
+
+### 왜 파일 줄수 숫자 자체를 빼나
+
+- 사용자가 본 실패 모드(거대 파일)는 cohesion 실패의 *증상*. 줄 수는 proxy. proxy를 룰로 박으면 cargo cult — 290줄로 만들고 통과시키는 회피 동작 가능.
+- "One file = one purpose / Split by feature/domain / Cohesion beats line count" 만으로 의도가 더 정확히 전달됨.
+- 다른 정당한 긴 파일(스키마, 생성 코드, 테스트, 라우터)을 룰이 부당하게 위협하지 않음.
+- 룰 내부 모순 해소: "200-400 지향" + "cohesion이 우선" 은 약하게 충돌. 숫자 제거로 정합.
+
+### 왜 함수 50줄 / 중첩 4는 유지하나
+
+- 함수 길이: ESLint `max-lines-per-function=50` 디폴트 + Linux kernel "1-2 screenfuls" + Google Python "~40 lines" 모두 정합. "best practice" 주장 견고.
+- 중첩 깊이: ESLint `max-depth=4` 디폴트 + Linux kernel "more than 3 — fix your program" 정합.
+- AI 에이전트 adherence를 위한 측정 가능 임계값은 *최소한 어딘가에* 남아 있어야 함 — 함수 레벨이 더 신뢰성 있는 선택.
+
+### 왜 README narrative ("2,000-line file" 예시) 는 유지하나
+
+- 숫자가 *룰 본문*에 있는 것과 *narrative 예시*에 있는 것은 의미가 다름.
+- 본문 숫자 = 강제 임계값 → cargo cult 위험
+- narrative 예시 = 실패 모드의 구체 앵커 → 의도 전달
+- 2,000줄 같은 *극단치* 만 narrative에 남겨 의도 전달, 일상 임계값은 빼는 게 깔끔.
+
+## 미해결 / 후속
+
+- `rules/common/coding-style.md` 의 "200-400 typical, 800 max" 는 글로벌(~/.claude/rules/...) 이라 이 commit으로 손대지 않음. 사용자 확인 후 별도 정리 예정.
+
+---
+
+# 2026-05-18 (REVISION 1) — 10계명 룰 2+3 병합, 신규 룰 "Keep units small" 승격
 
 ## 결정 요약
 
