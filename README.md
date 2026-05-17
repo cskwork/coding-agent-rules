@@ -19,8 +19,10 @@ Every rule comes from a real failure mode:
 - Agents that hide errors behind try/catch and call it a fix.
 - Agents that claim success without running anything.
 - Agents that hardcode secrets or run `rm -rf` to "clean up".
+- Agents that bury the decision in narrative and never say *why*.
+- Agents that read the whole codebase into the main context, then ask you to re-explain it.
 
-The Ten Commandments are the smallest set of rules that block all of those.
+The Ten Commandments — plus the short *Response & Documentation Style* section — block all of those.
 
 ## Install
 
@@ -98,6 +100,7 @@ Drop or replace any rule that does not fit your repo. The Ten Commandments are t
 - **Imperative, not descriptive.** Every commandment is a directive ("Do X. Do not do Y."), not a value statement.
 - **Negative examples, where they pay off.** Rules 5, 6, 7, 9, 10 explicitly call out failure modes because vague positive guidance ("be careful") does not survive long contexts.
 - **No tool names.** The prompt does not reference `pytest`, `npm`, `cargo`, `gh`. Stays portable across stacks.
+- **Behavior vs communication.** The Ten Commandments govern *what the agent does*; *Response & Documentation Style* governs *how it talks*. Different audiences, different rules.
 
 ## Customizing
 
