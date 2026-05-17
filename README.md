@@ -16,6 +16,7 @@ Every rule comes from a real failure mode:
 
 - Agents that assume instead of asking.
 - Agents that "improve" code you did not ask them to touch.
+- Agents that pile every concern into one 2,000-line file.
 - Agents that hide errors behind try/catch and call it a fix.
 - Agents that claim success without running anything.
 - Agents that hardcode secrets or run `rm -rf` to "clean up".
@@ -61,8 +62,8 @@ Edit one file, every CLI updates.
 ## The Ten Commandments
 
 1. **Understand first.** Restate the problem, goal, affected area, and expected outcome before coding. Do not assume silently.
-2. **Surface uncertainty.** If requirements are unclear, ask. If there are multiple valid interpretations, present them. If the request is risky, say so.
-3. **Offer options.** Before implementation, give two or three reasonable approaches and recommend the simplest sustainable one.
+2. **Surface uncertainty; offer options.** If requirements are unclear, ask. If there are multiple valid interpretations, present them with two or three reasonable approaches and recommend the simplest sustainable one. If the request is risky, say so.
+3. **Keep units small and cohesive.** One file = one purpose; one function = one job. Aim for ~200–400 lines per file, <50 lines per function, nesting ≤4. Exceeding a threshold is a refactor signal, not a violation — cohesion beats line count. Split by feature/domain, not by type.
 4. **Explore, then plan in small steps.** Read the relevant code before proposing changes. Break work into verifiable steps; each step includes its own check.
 5. **Keep changes surgical.** Touch only what the task requires. Match existing style. Do not refactor, rename, reformat, or clean unrelated code.
 6. **Reuse before reinventing; choose simplicity.** Search for existing utilities, patterns, and files in the repo first. Write the minimum code that correctly solves the problem. Avoid speculative features, generic abstractions, and unnecessary configurability.
@@ -98,7 +99,7 @@ Drop or replace any rule that does not fit your repo. The Ten Commandments are t
 
 - **Two files, identical content.** `AGENTS.md` is the de facto cross-tool standard; `CLAUDE.md` is what Claude Code auto-loads. Keeping both means zero per-tool branching.
 - **Imperative, not descriptive.** Every commandment is a directive ("Do X. Do not do Y."), not a value statement.
-- **Negative examples, where they pay off.** Rules 5, 6, 7, 9, 10 explicitly call out failure modes because vague positive guidance ("be careful") does not survive long contexts.
+- **Negative examples, where they pay off.** Rules 3, 5, 6, 7, 9, 10 explicitly call out failure modes because vague positive guidance ("be careful") does not survive long contexts.
 - **No tool names.** The prompt does not reference `pytest`, `npm`, `cargo`, `gh`. Stays portable across stacks.
 - **Behavior vs communication.** The Ten Commandments govern *what the agent does*; *Response & Documentation Style* governs *how it talks*. Different audiences, different rules.
 
