@@ -117,7 +117,7 @@ N. **Title.** Imperative directive. (Why: one-clause rationale.)
 
 1. `proposed/AGENTS.md` 초안 작성 (Option A 적용본).
 2. README의 "Why" 섹션을 *짧게 줄임* — 본문에 Why가 들어갔으므로 중복 제거.
-3. `log/changelog-2026-05-17.md`에 결정 근거 기록 (저장소 룰 준수).
+3. `docs/changelog/changelog-2026-05-17.md`에 결정 근거 기록 (저장소 룰 준수).
 4. Issue/Discussion으로 커뮤니티 의견 수집 후 main 반영.
 
 ## 적용하지 않는 것 (의도적 배제)
