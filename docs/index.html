@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="ko" data-lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ten Commandments for Coding Agents</title>
+<meta name="description" content="A minimal drop-in CLAUDE.md / AGENTS.md system prompt. Two files. Ten rules. No fluff. Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, Cursor." />
+<meta property="og:title" content="Ten Commandments for Coding Agents" />
+<meta property="og:description" content="A minimal drop-in CLAUDE.md / AGENTS.md system prompt. Two files. Ten rules. No fluff." />
+<meta property="og:url" content="https://cskwork.github.io/coding-agent-rules/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23090c10'/%3E%3Ctext x='8' y='44' font-size='28' fill='%2339d353' font-family='monospace'%3E%3E_%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-2: #161b22;
+    --bg-3: #1c2128;
+    --line: #30363d;
+    --fg: #e6edf3;
+    --fg-dim: #8d96a0;
+    --green: #3fb950;
+    --green-soft: #3fb95022;
+    --amber: #d29922;
+    --red: #f85149;
+    --blue: #58a6ff;
+    --purple: #bc8cff;
+    --radius: 8px;
+    --maxw: 980px;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard", "Noto Sans KR", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.65;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background:
+      linear-gradient(180deg, rgba(63,185,80,0.04), transparent 320px),
+      var(--bg);
+  }
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre { font-family: var(--mono); }
+
+  header.site {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(10px);
+    background: rgba(13,17,23,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  header.site .row {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 12px 22px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--fg);
+    letter-spacing: 0;
+  }
+  .brand .prompt { color: var(--green); }
+  .brand .cursor {
+    display: inline-block; width: 8px; height: 14px;
+    background: var(--green); vertical-align: -2px; margin-left: 2px;
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .lang-toggle {
+    display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+    background: var(--bg-2);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .lang-toggle button {
+    background: transparent; border: 0; color: var(--fg-dim);
+    padding: 6px 12px; cursor: pointer; font-family: var(--mono); font-size: 12px;
+  }
+  .lang-toggle button.active { background: var(--green); color: #052e10; font-weight: 700; }
+
+  main { max-width: var(--maxw); margin: 0 auto; padding: 32px 22px 80px; }
+
+  /* terminal banner */
+  .terminal {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    overflow: hidden;
+    margin: 12px 0 28px;
+    box-shadow: 0 12px 40px -20px rgba(0,0,0,0.7);
+  }
+  .terminal .titlebar {
+    background: var(--bg-3);
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 12px; color: var(--fg-dim);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+  .terminal .body {
+    padding: 18px 18px 22px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--fg);
+    line-height: 1.75;
+  }
+  .terminal .line { white-space: pre-wrap; }
+  .terminal .ok { color: var(--green); }
+  .terminal .warn { color: var(--amber); }
+  .terminal .err { color: var(--red); }
+  .terminal .dim { color: var(--fg-dim); }
+  .terminal .cmt { color: #6e7681; }
+  .terminal .acc { color: var(--blue); }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(28px, 4.5vw, 44px);
+    line-height: 1.18;
+    letter-spacing: -0.6px;
+    margin: 24px 0 12px;
+    font-weight: 800;
+  }
+  h1 .accent { color: var(--green); }
+  .lead { color: var(--fg-dim); font-size: 17px; max-width: 720px; }
+
+  .cta { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--bg-2); color: var(--fg);
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+  }
+  .btn.primary { background: var(--green); color: #052e10; border-color: var(--green); font-weight: 700; }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); }
+
+  h2 {
+    font-size: 22px; margin: 48px 0 14px; letter-spacing: -0.2px;
+    font-family: var(--sans); font-weight: 700;
+  }
+  h2 .hash { color: var(--green); font-family: var(--mono); font-weight: 500; margin-right: 6px; }
+  h3 { font-size: 16px; margin: 24px 0 8px; }
+  p { color: var(--fg); margin: 0 0 12px; }
+  ul { padding-left: 20px; }
+  ul li { margin: 4px 0; color: var(--fg-dim); }
+
+  /* rules — IDE diff style */
+  .rules { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .rule {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    border-radius: 6px;
+    background: var(--bg-2);
+    padding: 12px 16px 12px 14px;
+    font-family: var(--sans);
+  }
+  .rule .tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--green); background: var(--green-soft);
+    padding: 2px 8px; border-radius: 4px;
+    margin-right: 10px; letter-spacing: 0.5px;
+  }
+  .rule h4 { margin: 0 0 4px; font-size: 16px; display: inline; vertical-align: middle; }
+  .rule p { color: var(--fg-dim); font-size: 14.5px; margin: 6px 0 0; }
+
+  /* install table */
+  table {
+    border-collapse: collapse; width: 100%;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 6px; overflow: hidden;
+    font-size: 14px;
+    margin: 8px 0 14px;
+  }
+  th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--line); font-family: var(--mono); }
+  th { background: var(--bg-3); color: var(--fg); font-weight: 600; font-size: 12px; }
+  td { color: var(--fg-dim); }
+  tr:last-child td { border-bottom: 0; }
+
+  pre.code {
+    background: #010409;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #d7defb;
+  }
+  pre.code .kw { color: var(--purple); }
+  pre.code .str { color: #a5d6ff; }
+  pre.code .cmt { color: #6e7681; }
+  pre.code .fn { color: var(--blue); }
+
+  .style-card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--bg-2);
+    padding: 14px 16px;
+  }
+  .style-card ul li { color: var(--fg); font-size: 14.5px; }
+  .style-card ul li b { color: var(--green); }
+
+  footer.site {
+    margin-top: 60px; padding: 22px;
+    border-top: 1px solid var(--line);
+    color: var(--fg-dim); font-size: 13px;
+    font-family: var(--mono);
+    text-align: center;
+  }
+  footer.site a { color: var(--green); }
+
+  [data-i18n-en] { display: none; }
+  html[data-lang="en"] [data-i18n-ko] { display: none; }
+  html[data-lang="en"] [data-i18n-en] { display: revert; }
+
+  @media (max-width: 600px) {
+    main { padding: 20px 16px 60px; }
+    header.site .row { padding: 10px 16px; }
+    h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="row">
+    <div class="brand"><span class="prompt">$</span>&nbsp;coding-agent-rules<span class="cursor"></span></div>
+    <div class="lang-toggle" role="tablist" aria-label="Language">
+      <button id="btn-ko" class="active" type="button" aria-pressed="true">KO</button>
+      <button id="btn-en" type="button" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO terminal -->
+  <div class="terminal" aria-hidden="false">
+    <div class="titlebar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span style="margin-left:8px;">~/.claude/CLAUDE.md</span>
+    </div>
+    <div class="body">
+<span class="cmt"># Two files. Ten rules. No fluff.</span>
+<span class="ok">$</span> agent.install(<span class="acc">'coding-agent-rules'</span>)
+<span class="dim">→ writes ~/.claude/CLAUDE.md</span>
+<span class="dim">→ writes ~/.codex/AGENTS.md</span>
+<span class="ok">✓ ready.</span> <span class="cmt"># agent now bound to the Ten Commandments.</span>
+    </div>
+  </div>
+
+  <h1 data-i18n-ko>코딩 에이전트가 <span class="accent">엉뚱한 짓을 못 하게</span> 만드는 10가지 규칙.</h1>
+  <h1 data-i18n-en>Ten rules that stop a coding agent from <span class="accent">going off the rails.</span></h1>
+
+  <p class="lead" data-i18n-ko>
+    Claude Code, Codex CLI, Gemini CLI, OpenCode, Cursor — <code>AGENTS.md</code> 또는 <code>CLAUDE.md</code>를 읽는 모든 도구를 위한 최소 드롭인 시스템 프롬프트. 두 파일, 동일 내용.
+  </p>
+  <p class="lead" data-i18n-en>
+    A minimal, drop-in system prompt for Claude Code, Codex CLI, Gemini CLI, OpenCode, Cursor — every tool that reads <code>AGENTS.md</code> or <code>CLAUDE.md</code>. Two files, identical content.
+  </p>
+
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/cskwork/coding-agent-rules" target="_blank" rel="noopener">
+      <span data-i18n-ko>GitHub 저장소</span><span data-i18n-en>GitHub repository</span>
+    </a>
+    <a class="btn" href="https://raw.githubusercontent.com/cskwork/coding-agent-rules/main/CLAUDE.md" target="_blank" rel="noopener">CLAUDE.md</a>
+    <a class="btn" href="https://raw.githubusercontent.com/cskwork/coding-agent-rules/main/AGENTS.md" target="_blank" rel="noopener">AGENTS.md</a>
+  </div>
+
+  <!-- WHY -->
+  <h2><span class="hash">#</span><span data-i18n-ko>왜 필요한가</span><span data-i18n-en>Why it exists</span></h2>
+
+  <p data-i18n-ko>대부분의 에이전트 프롬프트는 역할극, 페르소나 스캐폴딩, 도구별 트릭으로 부풀어 있습니다. 이 프롬프트는 정반대 — 에이전트가 코드를 만질 때 어떻게 행동해야 하는지에 대한 짧은 계약입니다. 모든 규칙은 실제 실패 사례에서 왔습니다.</p>
+  <p data-i18n-en>Most agent prompts are bloated with role-play, persona scaffolding, and tool-specific tricks. This one is the opposite — a tight contract about how an agent should behave when it touches your code. Every rule comes from a real failure mode.</p>
+
+  <div class="terminal" style="margin-top:14px;">
+    <div class="titlebar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span style="margin-left:8px;">failures.log</span>
+    </div>
+    <div class="body" data-i18n-ko>
+<span class="err">[FAIL]</span> assumed without asking.
+<span class="err">[FAIL]</span> "improved" unrelated code.
+<span class="err">[FAIL]</span> 2,000-line god-file again.
+<span class="err">[FAIL]</span> swallowed error in try/catch, called it a fix.
+<span class="err">[FAIL]</span> claimed success without running anything.
+<span class="err">[FAIL]</span> hardcoded secret / ran rm -rf.
+<span class="err">[FAIL]</span> buried decision in narrative; no "why".
+<span class="err">[FAIL]</span> read whole repo into main context.
+
+<span class="ok">[OK]</span> ten commandments block all of the above.
+    </div>
+    <div class="body" data-i18n-en>
+<span class="err">[FAIL]</span> assumed instead of asking.
+<span class="err">[FAIL]</span> "improved" code you did not ask it to touch.
+<span class="err">[FAIL]</span> piled every concern into one 2,000-line file.
+<span class="err">[FAIL]</span> hid the error behind try/catch and called it a fix.
+<span class="err">[FAIL]</span> claimed success without running anything.
+<span class="err">[FAIL]</span> hardcoded secrets or ran rm -rf to "clean up".
+<span class="err">[FAIL]</span> buried the decision in narrative, never said "why".
+<span class="err">[FAIL]</span> read the whole repo into main context.
+
+<span class="ok">[OK]</span> ten commandments block all of these.
+    </div>
+  </div>
+
+  <!-- INSTALL -->
+  <h2><span class="hash">#</span><span data-i18n-ko>설치</span><span data-i18n-en>Install</span></h2>
+
+  <p data-i18n-ko>에이전트가 읽는 파일을 골라서 홈 디렉터리나 프로젝트 루트에 떨어뜨리면 끝.</p>
+  <p data-i18n-en>Pick the file your agent reads. Drop it in your home directory or project root. Done.</p>
+
+  <table>
+    <thead><tr>
+      <th data-i18n-ko>도구</th><th data-i18n-en>Tool</th>
+      <th>Path</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Claude Code</td><td>~/.claude/CLAUDE.md</td></tr>
+      <tr><td>OpenAI Codex CLI</td><td>~/.codex/AGENTS.md</td></tr>
+      <tr><td>Google Gemini CLI</td><td>~/.gemini/AGENTS.md</td></tr>
+      <tr><td>OpenCode</td><td>~/.config/opencode/AGENTS.md</td></tr>
+      <tr><td>Cursor / Windsurf</td><td>&lt;repo&gt;/AGENTS.md</td></tr>
+    </tbody>
+  </table>
+
+  <h3 data-i18n-ko>한 줄 설치</h3>
+  <h3 data-i18n-en>One-liner</h3>
+<pre class="code">curl -fsSL https://raw.githubusercontent.com/cskwork/coding-agent-rules/main/AGENTS.md -o ~/.codex/AGENTS.md
+curl -fsSL https://raw.githubusercontent.com/cskwork/coding-agent-rules/main/CLAUDE.md -o ~/.claude/CLAUDE.md</pre>
+
+  <h3 data-i18n-ko>여러 CLI를 단일 소스로</h3>
+  <h3 data-i18n-en>Single source of truth across CLIs</h3>
+<pre class="code">git clone https://github.com/cskwork/coding-agent-rules.git ~/coding-agent-rules
+
+ln -sf ~/coding-agent-rules/CLAUDE.md   ~/.claude/CLAUDE.md
+ln -sf ~/coding-agent-rules/AGENTS.md   ~/.codex/AGENTS.md
+ln -sf ~/coding-agent-rules/AGENTS.md   ~/.gemini/AGENTS.md
+ln -sf ~/coding-agent-rules/AGENTS.md   ~/.config/opencode/AGENTS.md</pre>
+
+  <!-- RULES -->
+  <h2><span class="hash">#</span><span data-i18n-ko>10계명</span><span data-i18n-en>The Ten Commandments</span></h2>
+
+  <div class="rules" data-i18n-ko>
+    <div class="rule"><span class="tag">RULE 01</span><h4>먼저 이해하라.</h4><p>코딩 전에 문제, 목표, 영향 범위, 기대 결과를 다시 말하라. 조용히 가정하지 마라.</p></div>
+    <div class="rule"><span class="tag">RULE 02</span><h4>불확실성을 드러내고 선택지를 제시하라.</h4><p>요건이 모호하면 물어라. 해석이 여러 개면 합리적인 접근 2~3가지와 함께 제시하고, 가장 단순·지속 가능한 것을 추천하라. 위험하면 위험하다고 말하라.</p></div>
+    <div class="rule"><span class="tag">RULE 03</span><h4>단위는 작고 응집력 있게.</h4><p>파일 하나 = 목적 하나, 함수 하나 = 일 하나. 함수 ≤50줄, 중첩 ≤4. 파일이 여러 관심사를 섞으면 타입이 아니라 기능/도메인으로 쪼개라.</p></div>
+    <div class="rule"><span class="tag">RULE 04</span><h4>탐색한 다음 작은 단계로 계획하라.</h4><p>변경 제안 전 관련 코드를 먼저 읽어라. 검증 가능한 단계로 쪼개고, 각 단계에 자체 점검을 포함하라.</p></div>
+    <div class="rule"><span class="tag">RULE 05</span><h4>변경은 외과적으로.</h4><p>작업이 요구하는 부분만 만져라. 기존 스타일을 따르라. 무관한 코드를 리팩터링/이름 변경/포맷/정리하지 마라.</p></div>
+    <div class="rule"><span class="tag">RULE 06</span><h4>재발명 전에 재사용; 단순함을 택하라.</h4><p>기존 유틸·패턴·파일을 먼저 검색하라. 올바르게 푸는 최소 코드를 써라. 추측성 기능·일반화·불필요한 설정 가능성을 피하라.</p></div>
+    <div class="rule"><span class="tag">RULE 07</span><h4>근본 원인을 고쳐라.</h4><p>에러를 숨기거나 실패를 침묵시키거나 가짜 성공 경로를 추가하거나 증상을 패치하지 마라. 왜 발생했는지 찾고 그것을 고쳐라.</p></div>
+    <div class="rule"><span class="tag">RULE 08</span><h4>신뢰 전에 테스트.</h4><p>버그는 실패하는 테스트로 먼저 재현. 기능은 기대 동작을 테스트로 정의. 테스트 실패 → 최소 수정 → 테스트 통과.</p></div>
+    <div class="rule"><span class="tag">RULE 09</span><h4>완료를 주장하기 전에 검증.</h4><p>관련 테스트, 린트, 타입 체크, 빌드, 통합 검사를 실행하라. 무엇을 검증했는지 정확히 보고하라. 증거 없이 성공을 주장하지 마라.</p></div>
+    <div class="rule"><span class="tag">RULE 10</span><h4>시스템을 보호하라.</h4><p>사이드 이펙트(데이터, API, 권한, 마이그레이션, 캐시, 동시성, 보안, 하위 호환)를 고려하라. 시크릿을 하드코딩하지 마라. 파괴적 삭제 명령은 명시적 확인 없이 실행하지 마라.</p></div>
+  </div>
+
+  <div class="rules" data-i18n-en>
+    <div class="rule"><span class="tag">RULE 01</span><h4>Understand first.</h4><p>Restate the problem, goal, affected area, and expected outcome before coding. Do not assume silently.</p></div>
+    <div class="rule"><span class="tag">RULE 02</span><h4>Surface uncertainty; offer options.</h4><p>If requirements are unclear, ask. If interpretations differ, present 2–3 reasonable approaches and recommend the simplest sustainable one. If the request is risky, say so.</p></div>
+    <div class="rule"><span class="tag">RULE 03</span><h4>Keep units small and cohesive.</h4><p>One file = one purpose; one function = one job. Functions ≤50 lines, nesting ≤4. Split by feature/domain — not by type. Cohesion beats line count.</p></div>
+    <div class="rule"><span class="tag">RULE 04</span><h4>Explore, then plan in small steps.</h4><p>Read the relevant code before proposing changes. Break work into verifiable steps; each step has its own check.</p></div>
+    <div class="rule"><span class="tag">RULE 05</span><h4>Keep changes surgical.</h4><p>Touch only what the task requires. Match existing style. Do not refactor, rename, reformat, or clean unrelated code.</p></div>
+    <div class="rule"><span class="tag">RULE 06</span><h4>Reuse before reinventing; choose simplicity.</h4><p>Search for existing utilities, patterns, and files first. Write the minimum code that correctly solves the problem. Avoid speculative features and unnecessary configurability.</p></div>
+    <div class="rule"><span class="tag">RULE 07</span><h4>Fix root causes.</h4><p>Do not hide errors, silence failures, add fake success paths, or patch symptoms. Find why the problem happens and fix that.</p></div>
+    <div class="rule"><span class="tag">RULE 08</span><h4>Test before trusting.</h4><p>For bugs, reproduce with a failing test first. For features, define expected behavior with tests. Test fails → minimal fix → test passes.</p></div>
+    <div class="rule"><span class="tag">RULE 09</span><h4>Verify before claiming done.</h4><p>Run relevant tests, lint, type checks, build, and integration checks. Report exactly what was verified. Do not claim success without evidence.</p></div>
+    <div class="rule"><span class="tag">RULE 10</span><h4>Protect the system.</h4><p>Consider side effects: data, APIs, permissions, migrations, caching, concurrency, security, backward compatibility. Never hardcode secrets. Never run destructive deletion without explicit confirmation.</p></div>
+  </div>
+
+  <!-- STYLE -->
+  <h2><span class="hash">#</span><span data-i18n-ko>응답·문서 스타일</span><span data-i18n-en>Response &amp; Documentation Style</span></h2>
+
+  <p data-i18n-ko>10계명이 <em>무엇을 하는가</em>를 다룬다면, 이 섹션은 <em>어떻게 말하는가</em>를 다룹니다 — 응답, 커밋 메시지, 문서 갱신, 코드 주석 모두에 적용.</p>
+  <p data-i18n-en>The Ten Commandments govern <em>what the agent does</em>. This section governs <em>how it communicates</em>: responses, commit messages, doc updates, comments.</p>
+
+  <div class="style-card">
+    <ul data-i18n-ko>
+      <li><b>결정/답부터 먼저.</b> 그다음 이유(why)를 한 절로 짧게.</li>
+      <li><b>군더더기 절단.</b> 문장보다 핵심 키워드. 맥락에서 자명한 건 잘라라.</li>
+      <li><b>what은 코드가, why는 응답·커밋·주석이.</b></li>
+      <li><b>주석.</b> 코드만으로 이유가 드러나지 않을 때만. 보통 한 줄이면 충분.</li>
+      <li><b>주니어도 이해할 단어.</b> 전문 용어는 처음 등장 시 한 줄로 풀어라.</li>
+    </ul>
+    <ul data-i18n-en>
+      <li><b>Lead with the decision or answer.</b> Then the why in one short clause.</li>
+      <li><b>Keep prose tight.</b> Prefer keywords over sentences. Cut anything obvious from context.</li>
+      <li><b>What belongs in the code; why belongs in your response, commit, or comment.</b></li>
+      <li><b>Comments only when the reasoning is not obvious from the code.</b> One line is usually enough.</li>
+      <li><b>Use terms a junior engineer can follow.</b> Explain a jargon term the first time it appears.</li>
+    </ul>
+  </div>
+
+  <!-- DESIGN NOTES -->
+  <h2><span class="hash">#</span><span data-i18n-ko>설계 노트</span><span data-i18n-en>Design Notes</span></h2>
+
+  <ul>
+    <li data-i18n-ko><b>두 파일, 동일 내용.</b> <code>AGENTS.md</code>는 사실상 표준, <code>CLAUDE.md</code>는 Claude Code 자동 로드.</li>
+    <li data-i18n-en><b>Two files, identical content.</b> <code>AGENTS.md</code> is the cross-tool standard; <code>CLAUDE.md</code> is what Claude Code auto-loads.</li>
+
+    <li data-i18n-ko><b>명령형, 서술형 X.</b> 모든 계명은 지시문이지 가치 진술이 아니다.</li>
+    <li data-i18n-en><b>Imperative, not descriptive.</b> Every commandment is a directive, not a value statement.</li>
+
+    <li data-i18n-ko><b>부정 예시는 비용이 클 때만.</b> 3, 5, 6, 7, 9, 10번은 실패 모드를 명시. 모호한 긍정문은 긴 컨텍스트에서 살아남지 못함.</li>
+    <li data-i18n-en><b>Negative examples where they pay off.</b> Rules 3, 5, 6, 7, 9, 10 call out failure modes — vague positives do not survive long contexts.</li>
+
+    <li data-i18n-ko><b>도구 이름 없음.</b> <code>pytest</code>, <code>npm</code>, <code>cargo</code> 같은 이름이 안 들어가 어느 스택에도 휴대 가능.</li>
+    <li data-i18n-en><b>No tool names.</b> Stays portable across stacks — no <code>pytest</code>, <code>npm</code>, <code>cargo</code> hardcoded.</li>
+
+    <li data-i18n-ko><b>행동 vs 의사소통 분리.</b> 10계명은 행동, Style 섹션은 의사소통.</li>
+    <li data-i18n-en><b>Behavior vs communication.</b> The Ten Commandments govern what the agent does; the Style section governs how it talks.</li>
+  </ul>
+
+  <!-- RELATED -->
+  <h2><span class="hash">#</span><span data-i18n-ko>관련 자료</span><span data-i18n-en>Related</span></h2>
+
+  <ul>
+    <li><a href="https://agents.md" target="_blank" rel="noopener">AGENTS.md spec</a> — <span data-i18n-ko>크로스 툴 컨벤션</span><span data-i18n-en>cross-tool convention</span></li>
+    <li><a href="https://github.com/cskwork/investment-agent-rules" target="_blank" rel="noopener">investment-agent-rules</a> — <span data-i18n-ko>AI 투자 에이전트 10계명</span><span data-i18n-en>Ten Commandments for AI Investment Agents</span></li>
+    <li><a href="https://github.com/cskwork/planning-doc-rules" target="_blank" rel="noopener">planning-doc-rules</a> — <span data-i18n-ko>기획서 작성 10원칙</span><span data-i18n-en>Ten Rules for Writing a Planning Document</span></li>
+  </ul>
+
+</main>
+
+<footer class="site">
+  <div>
+    <span data-i18n-ko>// 두 파일. 열 가지 규칙. 군더더기 없음.</span>
+    <span data-i18n-en>// Two files. Ten rules. No fluff.</span>
+  </div>
+  <div style="margin-top: 8px;">
+    MIT · <a href="https://github.com/cskwork/coding-agent-rules">github.com/cskwork/coding-agent-rules</a>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var html = document.documentElement;
+    var btnKo = document.getElementById('btn-ko');
+    var btnEn = document.getElementById('btn-en');
+
+    function setLang(lang) {
+      html.setAttribute('lang', lang);
+      html.setAttribute('data-lang', lang);
+      btnKo.classList.toggle('active', lang === 'ko');
+      btnEn.classList.toggle('active', lang === 'en');
+      btnKo.setAttribute('aria-pressed', lang === 'ko');
+      btnEn.setAttribute('aria-pressed', lang === 'en');
+      try { localStorage.setItem('car-lang', lang); } catch (e) {}
+    }
+    btnKo.addEventListener('click', function () { setLang('ko'); });
+    btnEn.addEventListener('click', function () { setLang('en'); });
+    var stored = null;
+    try { stored = localStorage.getItem('car-lang'); } catch (e) {}
+    if (stored === 'ko' || stored === 'en') {
+      setLang(stored);
+    } else {
+      var nav = (navigator.language || 'ko').toLowerCase();
+      setLang(nav.indexOf('ko') === 0 ? 'ko' : 'en');
+    }
+  })();
+</script>
+</body>
+</html>
