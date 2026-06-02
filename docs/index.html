@@ -356,7 +356,7 @@ ln -sf ~/coding-agent-rules/AGENTS.md   ~/.config/opencode/AGENTS.md</pre>
   <div class="rules" data-i18n-ko>
     <div class="rule"><span class="tag">RULE 01</span><h4>먼저 이해하라.</h4><p>코딩 전에 문제, 목표, 영향 범위, 기대 결과를 다시 말하라. 조용히 가정하지 마라.</p></div>
     <div class="rule"><span class="tag">RULE 02</span><h4>불확실성을 드러내고 선택지를 제시하라.</h4><p>요건이 모호하면 물어라. 해석이 여러 개면 합리적인 접근 2~3가지와 함께 제시하고, 가장 단순·지속 가능한 것을 추천하라. 위험하면 위험하다고 말하라.</p></div>
-    <div class="rule"><span class="tag">RULE 03</span><h4>단위는 작고 응집력 있게.</h4><p>파일 하나 = 목적 하나, 함수 하나 = 일 하나. 함수 ≤50줄, 중첩 ≤4. 파일이 여러 관심사를 섞으면 타입이 아니라 기능/도메인으로 쪼개라.</p></div>
+    <div class="rule"><span class="tag">RULE 03</span><h4>단위는 작고 응집력 있게.</h4><p>파일 하나 = 목적 하나, 함수 하나 = 일 하나. 함수 ≤50줄, 중첩 ≤4. 파일이 여러 관심사를 섞으면 타입이 아니라 기능/도메인으로 쪼개라. 기계적 규칙 준수보다 사람이 읽기 쉬운 흐름과 의미 있는 경계를 우선하라.</p></div>
     <div class="rule"><span class="tag">RULE 04</span><h4>탐색한 다음 작은 단계로 계획하라.</h4><p>변경 제안 전 관련 코드를 먼저 읽어라. 검증 가능한 단계로 쪼개고, 각 단계에 자체 점검을 포함하라.</p></div>
     <div class="rule"><span class="tag">RULE 05</span><h4>변경은 외과적으로.</h4><p>작업이 요구하는 부분만 만져라. 기존 스타일을 따르라. 무관한 코드를 리팩터링/이름 변경/포맷/정리하지 마라.</p></div>
     <div class="rule"><span class="tag">RULE 06</span><h4>재발명 전에 재사용; 단순함을 택하라.</h4><p>기존 유틸·패턴·파일을 먼저 검색하라. 올바르게 푸는 최소 코드를 써라. 추측성 기능·일반화·불필요한 설정 가능성을 피하라.</p></div>
@@ -369,7 +369,7 @@ ln -sf ~/coding-agent-rules/AGENTS.md   ~/.config/opencode/AGENTS.md</pre>
   <div class="rules" data-i18n-en>
     <div class="rule"><span class="tag">RULE 01</span><h4>Understand first.</h4><p>Restate the problem, goal, affected area, and expected outcome before coding. Do not assume silently.</p></div>
     <div class="rule"><span class="tag">RULE 02</span><h4>Surface uncertainty; offer options.</h4><p>If requirements are unclear, ask. If interpretations differ, present 2–3 reasonable approaches and recommend the simplest sustainable one. If the request is risky, say so.</p></div>
-    <div class="rule"><span class="tag">RULE 03</span><h4>Keep units small and cohesive.</h4><p>One file = one purpose; one function = one job. Functions ≤50 lines, nesting ≤4. Split by feature/domain — not by type. Cohesion beats line count.</p></div>
+    <div class="rule"><span class="tag">RULE 03</span><h4>Keep units small and cohesive.</h4><p>One file = one purpose; one function = one job. Functions ≤50 lines, nesting ≤4. Split by feature/domain — not by type. Cohesion beats line count. Refactor for human readability, not mechanical rule compliance.</p></div>
     <div class="rule"><span class="tag">RULE 04</span><h4>Explore, then plan in small steps.</h4><p>Read the relevant code before proposing changes. Break work into verifiable steps; each step has its own check.</p></div>
     <div class="rule"><span class="tag">RULE 05</span><h4>Keep changes surgical.</h4><p>Touch only what the task requires. Match existing style. Do not refactor, rename, reformat, or clean unrelated code.</p></div>
     <div class="rule"><span class="tag">RULE 06</span><h4>Reuse before reinventing; choose simplicity.</h4><p>Search for existing utilities, patterns, and files first. Write the minimum code that correctly solves the problem. Avoid speculative features and unnecessary configurability.</p></div>
