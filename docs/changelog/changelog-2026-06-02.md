@@ -11,3 +11,9 @@
 - 목적: coding-agent-rules를 바꿀 때마다 promptbox, ten-rules-skill, claude-code-config에 수동으로 같은 변경을 커밋/푸시해야 했다.
 - 결정: `scripts/sync-downstreams.sh`와 GitHub Actions workflow를 추가해 main push 후 다운스트림 공유본을 자동 동기화하게 했다.
 - 영향: 앞으로 원본 규칙만 수정하고 push하면 변경이 있는 다운스트림 저장소에만 자동 커밋이 생성된다. workflow는 `DOWNSTREAM_SYNC_TOKEN` secret이 필요하다.
+
+## 다운스트림 동기화 workflow 인증 수정
+
+- 목적: Actions에서 partial sparse clone이 나중에 blob을 가져오며 인증 없이 실패했다.
+- 결정: 다운스트림 clone에서 partial clone 옵션을 제거하고, sparse checkout 전에 repo-local 인증 header를 설정했다.
+- 영향: 자동 동기화 workflow가 작은 규칙 파일 묶음을 안정적으로 받아올 수 있다.
