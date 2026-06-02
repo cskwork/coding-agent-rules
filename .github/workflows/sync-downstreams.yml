@@ -1,0 +1,37 @@
+name: Sync downstream rule copies
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - AGENTS.md
+      - CLAUDE.md
+      - README.md
+      - README.ko.md
+      - scripts/sync-downstreams.sh
+      - .github/workflows/sync-downstreams.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-downstreams-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source rules
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Sync downstream repositories
+        env:
+          DOWNSTREAM_SYNC_TOKEN: ${{ secrets.DOWNSTREAM_SYNC_TOKEN }}
+          SOURCE_SHA: ${{ github.sha }}
+          GIT_AUTHOR_NAME: coding-agent-rules-sync
+          GIT_AUTHOR_EMAIL: coding-agent-rules-sync@users.noreply.github.com
+        run: ./scripts/sync-downstreams.sh
