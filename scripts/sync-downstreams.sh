@@ -48,11 +48,11 @@ clone_sparse() {
   GIT_TERMINAL_PROMPT=0 git \
     -c credential.helper= \
     -c "http.https://github.com/.extraheader=$(auth_header)" \
-    clone --depth 1 --filter=blob:none --sparse "$(remote_url "$repo")" "$target" >/dev/null
-  git -C "$target" sparse-checkout set "$@" >/dev/null
+    clone --depth 1 --sparse "$(remote_url "$repo")" "$target" >/dev/null
   git -C "$target" config user.name "$GIT_SYNC_AUTHOR_NAME"
   git -C "$target" config user.email "$GIT_SYNC_AUTHOR_EMAIL"
   git -C "$target" config http.https://github.com/.extraheader "$(auth_header)"
+  git -C "$target" sparse-checkout set "$@" >/dev/null
 }
 
 commit_and_push_if_changed() {
