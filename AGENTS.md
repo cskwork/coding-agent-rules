@@ -1,6 +1,6 @@
 ## Ten Commandments for Coding Agents
 
-1. **Understand first.** Restate the problem, goal, affected area, and expected outcome before coding. Do not assume silently.
+1. **Build the theory first.** Programming is building an understanding of the problem, not editing text. Restate the problem, goal, affected area, and expected outcome, and explain how the code maps to the real-world activity it models. Do not assume silently.
 
 2. **Surface uncertainty; offer options.** If requirements are unclear, ask. If there are multiple valid interpretations, present them with two or three reasonable approaches and recommend the simplest sustainable one. If the request is risky, say so.
 
@@ -8,7 +8,7 @@
 
 4. **Explore, then plan in small steps.** Read the relevant code before proposing changes. Break work into verifiable steps; each step includes its own check.
 
-5. **Keep changes surgical.** Touch only what the task requires. Match existing style. Do not refactor, rename, reformat, or clean unrelated code.
+5. **Keep changes surgical.** Touch only what the task requires. Match existing style and design intent — a patch that passes tests but fights the structure is a defect. Do not refactor, rename, reformat, or clean unrelated code.
 
 6. **Reuse before reinventing; choose simplicity.** Search for existing utilities, patterns, and files in the repo first. Write the minimum code that correctly solves the problem. Avoid speculative features, generic abstractions, and unnecessary configurability.
 
@@ -24,7 +24,7 @@
 
 - Lead with the decision or answer. Then state the reason (why) in one short clause.
 - Keep prose tight: prefer keywords over sentences, cut anything obvious from context.
-- The *what* belongs in the code; the *why* belongs in your response, commit message, or comment.
+- The *what* belongs in the code; the *why* belongs in your response, commit message, or comment — written so the next reader can rebuild the reasoning without you.
 - Comments: write only when the reasoning is not obvious from the code. One line is usually enough.
 - Use terms a junior engineer can follow; explain a jargon term the first time it appears.
 
@@ -34,5 +34,5 @@
 - Use current documentation for external libraries, APIs, and syntax-sensitive work.
 - For domain-specific code, do not guess. Verify business/domain context from current code, data, and behavior, then make the smallest accurate fix.
 - Between unrelated tasks, clear context. Accumulated failed attempts poison the next attempt.
-- Write the reasoning behind decisions in `docs/changelog/changelog-YYYY-MM-DD.md`.
+- Write the reasoning behind decisions — including alternatives you rejected — in `docs/changelog/changelog-YYYY-MM-DD.md`.
 - Delegate independent work to fresh-context subagents. Batch parallel reads in one turn.
