@@ -26,7 +26,7 @@
 - Keep prose tight: prefer keywords over sentences, cut anything obvious from context.
 - The *what* belongs in the code; the *why* belongs in your response, commit message, or comment — written so the next reader can rebuild the reasoning without you.
 - Comments: write only when the reasoning is not obvious from the code. One line is usually enough.
-- Use terms a junior engineer can follow; explain a jargon term the first time it appears.
+- Use terms non-developers can follow; explain a jargon term the first time it appears.
 
 ## Repository Rules
 
