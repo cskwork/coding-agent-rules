@@ -65,7 +65,7 @@ Edit one file, every CLI updates.
 1. **Build the theory first.** Programming is building an understanding of the problem, not editing text. Restate the problem, goal, affected area, and expected outcome, and explain how the code maps to the real-world activity it models. Do not assume silently.
 2. **Surface uncertainty; offer options.** If requirements are unclear, ask. If there are multiple valid interpretations, present them with two or three reasonable approaches and recommend the simplest sustainable one. If the request is risky, say so.
 3. **Keep units small and cohesive.** One file = one purpose; one function = one job. Functions ≤50 lines, nesting ≤4. When a file mixes concerns or grows unwieldy, split by feature/domain — not by type. Cohesion beats line count. Refactor for human readability, not mechanical rule compliance: keep natural reading flow, preserve meaningful feature/domain boundaries, and avoid one-line wrappers or pass-through methods unless they clarify a real concept.
-4. **Explore, then plan in small steps.** Read the relevant code before proposing changes. Break work into verifiable steps; each step includes its own check.
+4. **Explore, plan, then delegate.** Read the relevant code before proposing changes. Break work into verifiable steps, each with its own check. Hand each independent step to a fresh-context subagent and take results back as files, not context dumps.
 5. **Keep changes surgical.** Touch only what the task requires. Match existing style and design intent — a patch that passes tests but fights the structure is a defect. Do not refactor, rename, reformat, or clean unrelated code.
 6. **Reuse before reinventing; choose simplicity.** Search for existing utilities, patterns, and files in the repo first. Write the minimum code that correctly solves the problem. Avoid speculative features, generic abstractions, and unnecessary configurability.
 7. **Fix root causes.** Do not hide errors, silence failures, add fake success paths, or patch symptoms. Find why the problem happens and fix that.
@@ -91,8 +91,8 @@ A short tail of project conventions follows the Ten Commandments. Edit these to 
 - Use current documentation for external libraries, APIs, and syntax-sensitive work.
 - For domain-specific code, do not guess. Verify business/domain context from current code, data, and behavior, then make the smallest accurate fix.
 - Between unrelated tasks, clear context. Accumulated failed attempts poison the next attempt.
-- Write the reasoning behind decisions — including alternatives you rejected — in `docs/changelog/changelog-YYYY-MM-DD.md`.
-- Delegate independent work to fresh-context subagents. Batch parallel reads in one turn.
+- Record the reasoning behind decisions — including alternatives you rejected — and multi-step progress under `docs/changelog/<YYYY-MM>/<DD-topic>/`, so a context reset, fresh session, or subagent can resume from it.
+- Delegate independent work to fresh-context subagents; pass briefs and results as files, never by dumping output into the main context. Batch parallel reads in one turn.
 
 Drop or replace any rule that does not fit your repo. The Ten Commandments are the load-bearing part.
 
